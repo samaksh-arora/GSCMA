@@ -14,7 +14,7 @@ const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
     try {
       const token = await getToken();
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/events/${event._id}/rsvp`,
+        `${import.meta.env.VITE_API_URL}/events/${event._id}/rsvp`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

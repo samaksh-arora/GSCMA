@@ -3,14 +3,28 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-  const { currentUser, userRole, logout } = useAuth();
   const navigate = useNavigate();
+  
+  // Safely get auth - won't crash if context isn't ready
+  let currentUser = null;
+  let userRole = null;
+  let logout = null;
+  
+  try {
+    const auth = useAuth();
+    currentUser = auth?.currentUser;
+    userRole = auth?.userRole;
+    logout = auth?.logout;
+  } catch (error) {
+    console.log('Auth not available yet');
+  }
 
-  // Handle logout
   const handleLogout = async () => {
     try {
-      await logout();
-      navigate('/');
+      if (logout) {
+        await logout();
+        navigate('/');
+      }
     } catch (error) {
       console.error('Failed to log out:', error);
     }

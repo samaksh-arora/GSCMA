@@ -1,89 +1,39 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { auth } from '../firebase/config';
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged 
-} from 'firebase/auth';
-import axios from 'axios';
 
-// Create Auth Context
 const AuthContext = createContext();
 
-// Custom hook to use auth context
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider');
+  }
+  return context;
 };
 
-// Auth Provider Component
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // Signup function
+  const [loading, setLoading] = useState(false); // Changed to false for now
+  
   const signup = async (email, password, userData) => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const token = await userCredential.user.getIdToken();
-    
-    // Send user data to backend to create user in MongoDB
-    const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/register`, {
-      firebaseUid: userCredential.user.uid,
-      email: email,
-      ...userData
-    }, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    
-    return response.data;
+    console.log('Signup called - Firebase not configured yet');
+    alert('Firebase configuration needed for signup');
   };
 
-  // Login function
-  const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  const login = async (email, password) => {
+    console.log('Login called - Firebase not configured yet');
+    alert('Firebase configuration needed for login');
   };
 
-  // Logout function
-  const logout = () => {
-    return signOut(auth);
+  const logout = async () => {
+    console.log('Logout called');
+    setCurrentUser(null);
+    setUserRole(null);
   };
 
-  // Get user token
   const getToken = async () => {
-    if (currentUser) {
-      return await currentUser.getIdToken();
-    }
     return null;
   };
-
-  // Fetch user role from backend
-  const fetchUserRole = async (user) => {
-    try {
-      const token = await user.getIdToken();
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setUserRole(response.data.role);
-    } catch (error) {
-      console.error('Error fetching user role:', error);
-    }
-  };
-
-  // Listen to auth state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      if (user) {
-        fetchUserRole(user);
-      } else {
-        setUserRole(null);
-      }
-      setLoading(false);
-    });
-
-    return unsubscribe;
-  }, []);
 
   const value = {
     currentUser,

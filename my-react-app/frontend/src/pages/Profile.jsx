@@ -16,7 +16,7 @@ const Profile = () => {
     try {
       const token = await getToken();
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/users/me`,
+        `${import.meta.env.VITE_API_URL}/users/me`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUserData(response.data);

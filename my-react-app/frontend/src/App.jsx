@@ -1,52 +1,47 @@
+// src/App.jsx - Remove BrowserRouter from here!
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom'; // NOT BrowserRouter
 import { AuthProvider } from './context/AuthContext';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import ProtectedRoute from './components/ProtectedRoute';
-
-// Pages
-import Home from './pages/Home';
-import About from './pages/About';
-import Officers from './pages/Officers';
-import Events from './pages/Events';
-import Join from './pages/Join';
-import Contact from './pages/Contact';
-import Login from './pages/Login';
-import Profile from './pages/Profile';
-import Members from './pages/Members';
-import AdminDashboard from './pages/AdminDashboard';
+// ... rest of imports
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/officers" element={<Officers />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/join" element={<Join />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
-
-              {/* Protected Member Routes */}
-              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-              <Route path="/members" element={<ProtectedRoute><Members /></ProtectedRoute>} />
-
-              {/* Protected Admin Routes */}
-              <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
+      {/* NO <Router> wrapper here */}
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            {/* ... other routes */}
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </AuthProvider>
   );
 }
 
 export default App;
+
+// import React from 'react';
+// import { Routes, Route } from 'react-router-dom';
+// import Navbar from './components/Navbar';
+// import Footer from './components/Footer';
+// import Home from './pages/Home'; // ADD ONE PAGE AT A TIME
+
+// function App() {
+//   return (
+//     <div className="flex flex-col min-h-screen">
+//       <Navbar />
+//       <main className="flex-grow">
+//         <Routes>
+//           <Route path="/" element={<Home />} /> {/* TEST HOME */}
+//         </Routes>
+//       </main>
+//       <Footer />
+//     </div>
+//   );
+// }
+
+// export default App;

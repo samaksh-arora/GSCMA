@@ -26,7 +26,7 @@ const Events = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/events`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/events`);
       setEvents(response.data);
       setLoading(false);
     } catch (error) {
@@ -51,14 +51,14 @@ const Events = () => {
       if (editingEvent) {
         // Update existing event
         await axios.put(
-          `${process.env.REACT_APP_API_URL}/events/${editingEvent._id}`,
+          `${import.meta.env.VITE_API_URL}/events/${editingEvent._id}`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
         // Create new event
         await axios.post(
-          `${process.env.REACT_APP_API_URL}/events`,
+          `${import.meta.env.VITE_API_URL}/events`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -79,7 +79,7 @@ const Events = () => {
       try {
         const token = await getToken();
         await axios.delete(
-          `${process.env.REACT_APP_API_URL}/events/${eventId}`,
+          `${import.meta.env.VITE_API_URL}/events/${eventId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         fetchEvents();
