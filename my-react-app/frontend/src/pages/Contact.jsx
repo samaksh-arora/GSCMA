@@ -1,174 +1,131 @@
-import React, { useState } from 'react';
-import { FaLinkedin, FaInstagram, FaTwitter, FaFacebook, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import React from 'react';
+import { FaLinkedin, FaInstagram, FaEnvelope } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  const [submitted, setSubmitted] = useState(false);
-
-  // Handle input changes
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // In production, this would send to backend
-    console.log('Contact form submitted:', formData);
-    setSubmitted(true);
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setTimeout(() => setSubmitted(false), 3000);
+  const fadeIn = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 },
   };
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold mb-4">Contact Us</h1>
-        <p className="text-lg">Get in touch with GSCMA - we'd love to hear from you!</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-base-100 to-base-200">
+      {/* Hero Section */}
+      <motion.div
+        className="container mx-auto px-4 py-20 text-center"
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        transition={{ duration: 0.8 }}
+      >
+        <h1 className="text-6xl font-bold mb-6">Get In Touch</h1>
+        <p className="text-xl text-base-content/70 max-w-2xl mx-auto">
+          Connect with GSCMA and stay updated on supply chain events, opportunities, and community news
+        </p>
+      </motion.div>
 
-      <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-        {/* Contact Information */}
-        <div>
-          <h2 className="text-3xl font-bold mb-6">Get In Touch</h2>
-          
-          <div className="space-y-4 mb-8">
-            <div className="flex items-center">
-              <FaEnvelope className="w-6 h-6 mr-4 text-primary" />
-              <div>
-                <p className="font-semibold">Email</p>
-                <a href="mailto:info@gscma.org" className="link link-primary">info@gscma.org</a>
+      {/* Contact Cards */}
+      <div className="container mx-auto px-4 pb-20">
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {/* Email Card */}
+          <motion.a
+            href="mailto:info@gscma.org"
+            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border-2 border-base-300 hover:border-primary"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            whileHover={{ y: -10, scale: 1.02 }}
+          >
+            <div className="card-body items-center text-center">
+              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <FaEnvelope className="w-10 h-10 text-primary" />
               </div>
+              <h3 className="card-title text-2xl mb-2">Email Us</h3>
+              <p className="text-base-content/70 mb-4">
+                Send us an email and we'll get back to you soon
+              </p>
+              <p className="text-primary font-semibold">info@gscma.org</p>
             </div>
+          </motion.a>
 
-            <div className="flex items-center">
-              <FaPhone className="w-6 h-6 mr-4 text-primary" />
-              <div>
-                <p className="font-semibold">Phone</p>
-                <p>(313) 555-0123</p>
+          {/* LinkedIn Card */}
+          <motion.a
+            href="https://linkedin.com/company/gscma"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border-2 border-base-300 hover:border-secondary"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            whileHover={{ y: -10, scale: 1.02 }}
+          >
+            <div className="card-body items-center text-center">
+              <div className="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
+                <FaLinkedin className="w-10 h-10 text-secondary" />
               </div>
+              <h3 className="card-title text-2xl mb-2">LinkedIn</h3>
+              <p className="text-base-content/70 mb-4">
+                Connect with us professionally and see career opportunities
+              </p>
+              <p className="text-secondary font-semibold">@GSCMA</p>
             </div>
+          </motion.a>
 
-            <div className="flex items-center">
-              <FaMapMarkerAlt className="w-6 h-6 mr-4 text-primary" />
-              <div>
-                <p className="font-semibold">Location</p>
-                <p>Mike Ilitch School of Business<br />Wayne State University<br />Detroit, MI 48202</p>
+          {/* Instagram Card */}
+          <motion.a
+            href="https://instagram.com/gscma"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border-2 border-base-300 hover:border-accent"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            whileHover={{ y: -10, scale: 1.02 }}
+          >
+            <div className="card-body items-center text-center">
+              <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mb-4">
+                <FaInstagram className="w-10 h-10 text-accent" />
               </div>
+              <h3 className="card-title text-2xl mb-2">Instagram</h3>
+              <p className="text-base-content/70 mb-4">
+                Follow us for event photos and community highlights
+              </p>
+              <p className="text-accent font-semibold">@GSCMA_WSU</p>
             </div>
-          </div>
-
-          {/* Social Media Links */}
-          <div>
-            <h3 className="text-2xl font-bold mb-4">Follow Us</h3>
-            <div className="flex space-x-4">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
-                <FaLinkedin className="w-6 h-6" />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
-                <FaInstagram className="w-6 h-6" />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
-                <FaTwitter className="w-6 h-6" />
-              </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="btn btn-circle btn-outline">
-                <FaFacebook className="w-6 h-6" />
-              </a>
-            </div>
-          </div>
-
-          {/* Office Hours */}
-          <div className="mt-8 bg-base-200 rounded-lg p-6">
-            <h3 className="text-xl font-bold mb-4">Office Hours</h3>
-            <p className="mb-2"><strong>Monday - Thursday:</strong> 2:00 PM - 5:00 PM</p>
-            <p className="mb-2"><strong>Friday:</strong> 1:00 PM - 4:00 PM</p>
-            <p><strong>Saturday - Sunday:</strong> Closed</p>
-          </div>
+          </motion.a>
         </div>
 
-        {/* Contact Form */}
-        <div>
-          <div className="card bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title mb-4">Send Us a Message</h2>
-              
-              {submitted && (
-                <div className="alert alert-success mb-4">
-                  <span>Thank you! Your message has been sent successfully.</span>
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit}>
-                <div className="form-control mb-4">
-                  <label className="label">
-                    <span className="label-text">Name</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="input input-bordered"
-                    required
-                  />
-                </div>
-
-                <div className="form-control mb-4">
-                  <label className="label">
-                    <span className="label-text">Email</span>
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="input input-bordered"
-                    required
-                  />
-                </div>
-
-                <div className="form-control mb-4">
-                  <label className="label">
-                    <span className="label-text">Subject</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    className="input input-bordered"
-                    required
-                  />
-                </div>
-
-                <div className="form-control mb-4">
-                  <label className="label">
-                    <span className="label-text">Message</span>
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="textarea textarea-bordered h-32"
-                    required
-                  />
-                </div>
-
-                <button type="submit" className="btn btn-primary w-full">
-                  Send Message
-                </button>
-              </form>
-            </div>
+        {/* Additional Info Section */}
+        <motion.div
+          className="max-w-3xl mx-auto mt-16 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+        >
+          <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 border-2 border-primary/20">
+            <h3 className="text-3xl font-bold mb-4">Visit Us</h3>
+            <p className="text-lg text-base-content/80 mb-2">
+              Mike Ilitch School of Business
+            </p>
+            <p className="text-lg text-base-content/80 mb-2">
+              Wayne State University
+            </p>
+            <p className="text-lg text-base-content/80 mb-6">
+              Detroit, MI 48202
+            </p>
+            <div className="divider" />
+            <h4 className="text-xl font-bold mb-3">Office Hours</h4>
+            <p className="text-base-content/70">
+              <strong>Monday - Thursday:</strong> 2:00 PM - 5:00 PM
+            </p>
+            <p className="text-base-content/70">
+              <strong>Friday:</strong> 1:00 PM - 4:00 PM
+            </p>
+            <p className="text-base-content/70">
+              <strong>Weekend:</strong> Closed
+            </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

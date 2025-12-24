@@ -16,7 +16,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-lg border-b-2 border-primary">
+    <div className="navbar bg-base-100 shadow-lg border-b-2 border-primary sticky top-0 z-50">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -24,7 +24,7 @@ const Navbar = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
             </svg>
           </label>
-          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-base-100 rounded-box w-52">
             <li><Link to="/" className="hover:text-primary">Home</Link></li>
             <li><Link to="/about" className="hover:text-primary">About</Link></li>
             <li><Link to="/officers" className="hover:text-primary">Officers</Link></li>
@@ -60,7 +60,7 @@ const Navbar = () => {
                 <img src={`https://ui-avatars.com/api/?name=${currentUser.email}&background=4ade80&color=ffffff`} alt="Profile" />
               </div>
             </label>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 border border-primary">
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-base-100 rounded-box w-52 border border-primary">
               <li><Link to="/profile" className="hover:text-primary">Profile</Link></li>
               <li><a onClick={handleLogout} className="hover:text-error">Logout</a></li>
             </ul>
