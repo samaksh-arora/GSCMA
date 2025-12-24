@@ -8,6 +8,10 @@ const AdminDashboard = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('users');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [eventAttendees, setEventAttendees] = useState([]);
+  const [showAttendeesModal, setShowAttendeesModal] = useState(false);
 
   // Fetch dashboard data
   useEffect(() => {
@@ -33,6 +37,35 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
+
+  // Fetch event attendees
+  const fetchEventAttendees = async (eventId, eventName) => {
+    try {
+      const token = await getToken();
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/events/${eventId}/attendees`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setEventAttendees(response.data);
+      setSelectedEvent(eventName);
+      setShowAttendeesModal(true);
+    } catch (error) {
+      console.error('Error fetching event attendees:', error);
+      alert('Failed to fetch event attendees.');
+    }
+  };
+
+  // Filter users based on search term
+  const filteredUsers = users.filter(user => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      user.firstName.toLowerCase().includes(searchLower) ||
+      user.lastName.toLowerCase().includes(searchLower) ||
+      user.email.toLowerCase().includes(searchLower) ||
+      user.major.toLowerCase().includes(searchLower) ||
+      user.graduationYear.toString().includes(searchLower)
+    );
+  });
 
   // Toggle payment status
   const togglePaymentStatus = async (userId, currentStatus) => {
@@ -159,7 +192,41 @@ const AdminDashboard = () => {
       {activeTab === 'users' && (
         <div className="card bg-base-100 shadow-xl border-2 border-primary/20">
           <div className="card-body">
-            <h2 className="card-title mb-4 text-primary">User Management</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="card-title text-primary">User Management</h2>
+              <div className="form-control">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    placeholder="Search users..."
+                    className="input input-bordered input-primary"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <button className="btn btn-square btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            {searchTerm && (
+              <div className="alert alert-info mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Showing {filteredUsers.length} of {users.length} users matching "{searchTerm}"</span>
+                <button 
+                  className="btn btn-sm btn-ghost"
+                  onClick={() => setSearchTerm('')}
+                >
+                  Clear
+                </button>
+              </div>
+            )}
+
             <div className="overflow-x-auto">
               <table className="table table-zebra w-full">
                 <thead>
@@ -174,7 +241,7 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user) => (
+                  {filteredUsers.map((user) => (
                     <tr key={user._id}>
                       <td className="font-semibold">{user.firstName} {user.lastName}</td>
                       <td>{user.email}</td>
@@ -216,6 +283,12 @@ const AdminDashboard = () => {
                   ))}
                 </tbody>
               </table>
+              
+              {filteredUsers.length === 0 && (
+                <div className="text-center py-8">
+                  <p className="text-gray-500">No users found matching your search.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -246,10 +319,21 @@ const AdminDashboard = () => {
                       <td>{event.time}</td>
                       <td>{event.location}</td>
                       <td>
-                        <div className="badge badge-info">{event.attendees?.length || 0}</div>
+                        <button 
+                          className="badge badge-info cursor-pointer hover:badge-primary"
+                          onClick={() => fetchEventAttendees(event._id, event.name)}
+                        >
+                          {event.attendees?.length || 0} attendees
+                        </button>
                       </td>
                       <td>
                         <div className="flex gap-2">
+                          <button 
+                            className="btn btn-xs btn-info"
+                            onClick={() => fetchEventAttendees(event._id, event.name)}
+                          >
+                            View Attendees
+                          </button>
                           <button className="btn btn-xs btn-primary">Edit</button>
                           <button className="btn btn-xs btn-error">Delete</button>
                         </div>
@@ -258,6 +342,51 @@ const AdminDashboard = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Event Attendees Modal */}
+      {showAttendeesModal && (
+        <div className="modal modal-open">
+          <div className="modal-box max-w-4xl">
+            <h3 className="font-bold text-lg text-primary mb-4">
+              Attendees for "{selectedEvent}"
+            </h3>
+            
+            {eventAttendees.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="table table-zebra w-full">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>RSVP Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {eventAttendees.map((attendee, index) => (
+                      <tr key={index}>
+                        <td className="font-semibold">{attendee.userName}</td>
+                        <td>{new Date(attendee.rsvpDate).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No attendees have RSVP'd for this event yet.</p>
+              </div>
+            )}
+            
+            <div className="modal-action">
+              <button 
+                className="btn btn-primary"
+                onClick={() => setShowAttendeesModal(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
