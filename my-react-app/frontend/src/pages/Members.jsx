@@ -17,7 +17,7 @@ const Members = () => {
     try {
       const token = await getToken();
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/users/members`,
+        `${import.meta.env.VITE_API_URL}/users/members`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMembers(response.data);

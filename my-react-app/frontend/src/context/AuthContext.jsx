@@ -3,7 +3,8 @@ import {
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   signOut, 
-  onAuthStateChanged 
+  onAuthStateChanged,
+  sendPasswordResetEmail  // ← Add this import
 } from 'firebase/auth';
 import { auth } from '../firebase/config';
 import axios from 'axios';
@@ -75,6 +76,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // ← Add reset password function
+  const resetPassword = async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      console.log('Password reset email sent to:', email);
+    } catch (error) {
+      console.error('Reset password error:', error);
+      throw error;
+    }
+  };
+
   const getToken = async () => {
     if (currentUser) {
       return await currentUser.getIdToken();
@@ -129,7 +141,8 @@ export const AuthProvider = ({ children }) => {
     signup,
     login,
     logout,
-    getToken
+    getToken,
+    resetPassword  // ← Add to exported values
   };
 
   return (

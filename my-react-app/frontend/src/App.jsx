@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 
+
 // Import pages
 import Home from './pages/Home';
 import About from './pages/About';
@@ -15,6 +16,7 @@ import Members from './pages/Members';
 import Officers from './pages/Officers';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
+import ForgotPassword from './pages/ForgotPassword';
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           <Route path="/join" element={<Join />} />
           <Route path="/login" element={<Login />} />
           <Route path="/officers" element={<Officers />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/members" element={
             <ProtectedRoute>
               <Members />
