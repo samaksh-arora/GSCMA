@@ -4,27 +4,12 @@ import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  
-  // Safely get auth - won't crash if context isn't ready
-  let currentUser = null;
-  let userRole = null;
-  let logout = null;
-  
-  try {
-    const auth = useAuth();
-    currentUser = auth?.currentUser;
-    userRole = auth?.userRole;
-    logout = auth?.logout;
-  } catch (error) {
-    console.log('Auth not available yet');
-  }
+  const { currentUser, userRole, logout } = useAuth();
 
   const handleLogout = async () => {
     try {
-      if (logout) {
-        await logout();
-        navigate('/');
-      }
+      await logout();
+      navigate('/');
     } catch (error) {
       console.error('Failed to log out:', error);
     }

@@ -1,4 +1,12 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from 'firebase/auth';
+import { auth } from '../firebase/config';
+import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -13,27 +21,107 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
-  const [loading, setLoading] = useState(false); // Changed to false for now
+  const [loading, setLoading] = useState(true);
   
   const signup = async (email, password, userData) => {
-    console.log('Signup called - Firebase not configured yet');
-    alert('Firebase configuration needed for signup');
+    try {
+      // Create Firebase user
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Get Firebase token
+      const token = await user.getIdToken();
+      
+      // Register user in backend
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/register`,
+        {
+          firebaseUid: user.uid,
+          email: user.email,
+          ...userData
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      
+      return response.data;
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
+    }
   };
 
   const login = async (email, password) => {
-    console.log('Login called - Firebase not configured yet');
-    alert('Firebase configuration needed for login');
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
   const logout = async () => {
-    console.log('Logout called');
-    setCurrentUser(null);
-    setUserRole(null);
+    try {
+      await signOut(auth);
+      setCurrentUser(null);
+      setUserRole(null);
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error;
+    }
   };
 
   const getToken = async () => {
+    if (currentUser) {
+      return await currentUser.getIdToken();
+    }
     return null;
   };
+
+  const fetchUserRole = async (user) => {
+    try {
+      console.log('AuthContext: Getting token for user role fetch');
+      const token = await user.getIdToken();
+      console.log('AuthContext: Making API call to fetch user role');
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log('AuthContext: User role fetched successfully', response.data.role);
+      setUserRole(response.data.role);
+    } catch (error) {
+      console.error('AuthContext: Error fetching user role:', error);
+      if (error.response) {
+        console.error('AuthContext: Response error:', error.response.status, error.response.data);
+      }
+      setUserRole('member'); // Default role
+    }
+  };
+
+  useEffect(() => {
+    console.log('AuthContext: Setting up auth state listener');
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log('AuthContext: Auth state changed', user ? user.email : 'No user');
+      setCurrentUser(user);
+      if (user) {
+        console.log('AuthContext: Fetching user role for', user.email);
+        await fetchUserRole(user);
+      } else {
+        setUserRole(null);
+      }
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
 
   const value = {
     currentUser,

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+  const { currentUser } = useAuth();
+
   return (
     <div>
       {/* Hero Section */}
@@ -11,7 +14,11 @@ const Home = () => {
           <div className="max-w-md">
             <h1 className="mb-5 text-5xl font-bold">Global Supply Chain Management Association</h1>
             <p className="mb-5">Wayne State University's premier organization for future supply chain leaders. Join us to network, learn, and grow.</p>
-            <Link to="/join" className="btn btn-primary">Join Now</Link>
+            {currentUser ? (
+              <Link to="/events" className="btn btn-primary">View Events</Link>
+            ) : (
+              <Link to="/join" className="btn btn-primary">Join Now</Link>
+            )}
           </div>
         </div>
       </div>

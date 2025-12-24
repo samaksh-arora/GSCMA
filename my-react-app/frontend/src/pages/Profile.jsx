@@ -6,23 +6,56 @@ const Profile = () => {
   const { currentUser, getToken } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Fetch user profile data
   useEffect(() => {
-    fetchUserData();
-  }, []);
+    if (currentUser) {
+      fetchUserData();
+    } else {
+      setLoading(false);
+      setError('No user logged in');
+    }
+  }, [currentUser]);
 
   const fetchUserData = async () => {
     try {
+      setLoading(true);
+      setError(null);
+      
       const token = await getToken();
+      if (!token) {
+        throw new Error('No authentication token available');
+      }
+
+      console.log('Fetching user data with token:', token.substring(0, 20) + '...');
+      
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/users/me`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { 
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          } 
+        }
       );
+      
+      console.log('User data response:', response.data);
       setUserData(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching user data:', error);
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+        setError(`Server error: ${error.response.data.error || error.response.statusText}`);
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+        setError('No response from server. Make sure the backend is running.');
+      } else {
+        console.error('Error message:', error.message);
+        setError(error.message);
+      }
+    } finally {
       setLoading(false);
     }
   };
@@ -30,7 +63,32 @@ const Profile = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <span className="loading loading-spinner loading-lg"></span>
+        <div className="text-center">
+          <span className="loading loading-spinner loading-lg"></span>
+          <p className="mt-4">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center">
+        <div className="alert alert-error max-w-md mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <h3 className="font-bold">Profile Error</h3>
+            <div className="text-xs">{error}</div>
+          </div>
+        </div>
+        <button 
+          className="btn btn-primary mt-4" 
+          onClick={fetchUserData}
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -38,7 +96,21 @@ const Profile = () => {
   if (!userData) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <p className="text-xl">Unable to load profile data.</p>
+        <div className="alert alert-warning max-w-md mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+          <div>
+            <h3 className="font-bold">No Profile Data</h3>
+            <div className="text-xs">Unable to load profile information.</div>
+          </div>
+        </div>
+        <button 
+          className="btn btn-primary mt-4" 
+          onClick={fetchUserData}
+        >
+          Retry
+        </button>
       </div>
     );
   }

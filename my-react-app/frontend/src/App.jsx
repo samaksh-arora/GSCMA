@@ -1,47 +1,56 @@
-// src/App.jsx - Remove BrowserRouter from here!
 import React from 'react';
-import { Routes, Route } from 'react-router-dom'; // NOT BrowserRouter
-import { AuthProvider } from './context/AuthContext';
-// ... rest of imports
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
+import AuthDebug from './components/AuthDebug';
+
+// Import pages
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Events from './pages/Events';
+import Join from './pages/Join';
+import Login from './pages/Login';
+import Members from './pages/Members';
+import Officers from './pages/Officers';
+import Profile from './pages/Profile';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
-    <AuthProvider>
-      {/* NO <Router> wrapper here */}
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            {/* ... other routes */}
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </AuthProvider>
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/officers" element={<Officers />} />
+          <Route path="/members" element={
+            <ProtectedRoute>
+              <Members />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </main>
+      <Footer />
+      <AuthDebug />
+    </div>
   );
 }
 
 export default App;
-
-// import React from 'react';
-// import { Routes, Route } from 'react-router-dom';
-// import Navbar from './components/Navbar';
-// import Footer from './components/Footer';
-// import Home from './pages/Home'; // ADD ONE PAGE AT A TIME
-
-// function App() {
-//   return (
-//     <div className="flex flex-col min-h-screen">
-//       <Navbar />
-//       <main className="flex-grow">
-//         <Routes>
-//           <Route path="/" element={<Home />} /> {/* TEST HOME */}
-//         </Routes>
-//       </main>
-//       <Footer />
-//     </div>
-//   );
-// }
-
-// export default App;
