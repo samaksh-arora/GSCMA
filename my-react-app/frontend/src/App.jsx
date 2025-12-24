@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
-import AuthDebug from './components/AuthDebug';
 
 // Import pages
 import Home from './pages/Home';
@@ -48,7 +47,6 @@ function App() {
         </Routes>
       </main>
       <Footer />
-      <AuthDebug />
     </div>
   );
 }

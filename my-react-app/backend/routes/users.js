@@ -31,6 +31,50 @@ router.get('/members', verifyToken, async (req, res) => {
   }
 });
 
+// Get all users with role info (admin only)
+router.get('/all', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const users = await User.find({})
+      .select('-firebaseUid')
+      .sort({ createdAt: -1 });
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching all users:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Update user role (admin only)
+router.put('/:userId/role', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { role } = req.body;
+
+    if (!['member', 'admin'].includes(role)) {
+      return res.status(400).json({ error: 'Invalid role. Must be "member" or "admin"' });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { role },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Log the role change
+    const adminUser = await User.findOne({ firebaseUid: req.user.uid });
+    console.log(`Role updated: ${user.email} -> ${role} by admin ${adminUser.email}`);
+
+    res.json({ message: `User role updated to ${role}`, user });
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Update user payment status (admin only)
 router.put('/:userId/payment', verifyToken, verifyAdmin, async (req, res) => {
   try {
@@ -76,6 +120,28 @@ router.put('/me', verifyToken, async (req, res) => {
     res.json({ message: 'Profile updated successfully', user });
   } catch (error) {
     console.error('Error updating profile:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Delete user (admin only)
+router.delete('/:userId', verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    const user = await User.findByIdAndDelete(userId);
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Log the deletion
+    const adminUser = await User.findOne({ firebaseUid: req.user.uid });
+    console.log(`User deleted: ${user.email} by admin ${adminUser.email}`);
+
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });

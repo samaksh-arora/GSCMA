@@ -16,7 +16,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-lg">
+    <div className="navbar bg-base-100 shadow-lg border-b-2 border-primary">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -25,47 +25,50 @@ const Navbar = () => {
             </svg>
           </label>
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/officers">Officers</Link></li>
-            <li><Link to="/events">Events</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
-            {currentUser && <li><Link to="/members">Members</Link></li>}
-            {userRole === 'admin' && <li><Link to="/admin">Admin</Link></li>}
+            <li><Link to="/" className="hover:text-primary">Home</Link></li>
+            <li><Link to="/about" className="hover:text-primary">About</Link></li>
+            <li><Link to="/officers" className="hover:text-primary">Officers</Link></li>
+            <li><Link to="/events" className="hover:text-primary">Events</Link></li>
+            <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
+            {currentUser && <li><Link to="/members" className="hover:text-primary">Members</Link></li>}
+            {userRole === 'admin' && <li><Link to="/admin" className="hover:text-primary">Admin</Link></li>}
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost normal-case text-xl">GSCMA</Link>
+        <Link to="/" className="btn btn-ghost normal-case text-xl font-bold">
+          <span className="text-primary">WAYNE STATE</span>
+          <span className="text-secondary ml-2">GSCMA</span>
+        </Link>
       </div>
       
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/officers">Officers</Link></li>
-          <li><Link to="/events">Events</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
-          {currentUser && <li><Link to="/members">Members</Link></li>}
-          {userRole === 'admin' && <li><Link to="/admin">Admin</Link></li>}
+          <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
+          <li><Link to="/about" className="hover:text-primary transition-colors">About</Link></li>
+          <li><Link to="/officers" className="hover:text-primary transition-colors">Officers</Link></li>
+          <li><Link to="/events" className="hover:text-primary transition-colors">Events</Link></li>
+          <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+          {currentUser && <li><Link to="/members" className="hover:text-primary transition-colors">Members</Link></li>}
+          {userRole === 'admin' && <li><Link to="/admin" className="hover:text-primary transition-colors">Admin</Link></li>}
         </ul>
       </div>
       
       <div className="navbar-end">
         {currentUser ? (
           <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar border-2 border-primary hover:border-secondary">
               <div className="w-10 rounded-full">
-                <img src={`https://ui-avatars.com/api/?name=${currentUser.email}&background=random`} alt="Profile" />
+                <img src={`https://ui-avatars.com/api/?name=${currentUser.email}&background=4ade80&color=ffffff`} alt="Profile" />
               </div>
             </label>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li><Link to="/profile">Profile</Link></li>
-              <li><a onClick={handleLogout}>Logout</a></li>
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 border border-primary">
+              <li><Link to="/profile" className="hover:text-primary">Profile</Link></li>
+              <li><a onClick={handleLogout} className="hover:text-error">Logout</a></li>
             </ul>
           </div>
         ) : (
           <>
-            <Link to="/join" className="btn btn-primary btn-sm mr-2">Join</Link>
-            <Link to="/login" className="btn btn-ghost btn-sm">Login</Link>
+            <Link to="/join" className="btn btn-primary btn-sm mr-2 hover:btn-secondary">Join</Link>
+            <Link to="/login" className="btn btn-ghost btn-sm hover:text-primary">Login</Link>
           </>
         )}
       </div>

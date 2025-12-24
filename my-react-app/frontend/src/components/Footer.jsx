@@ -3,31 +3,35 @@ import { FaLinkedin, FaInstagram, FaTwitter, FaFacebook } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
+    <footer className="footer footer-center p-10 bg-gradient-to-r from-primary/10 to-secondary/10 text-base-content border-t-2 border-primary/20">
       <div className="grid grid-flow-col gap-4">
-        <a href="/about" className="link link-hover">About us</a> 
-        <a href="/contact" className="link link-hover">Contact</a> 
-        <a href="/events" className="link link-hover">Events</a> 
-        <a href="/join" className="link link-hover">Join</a>
+        <a href="/about" className="link link-hover hover:text-primary transition-colors">About us</a> 
+        <a href="/contact" className="link link-hover hover:text-primary transition-colors">Contact</a> 
+        <a href="/events" className="link link-hover hover:text-primary transition-colors">Events</a> 
+        <a href="/join" className="link link-hover hover:text-primary transition-colors">Join</a>
       </div> 
       <div>
         <div className="grid grid-flow-col gap-4">
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-            <FaLinkedin className="w-6 h-6 hover:text-primary cursor-pointer" />
+            <FaLinkedin className="w-6 h-6 hover:text-primary cursor-pointer transition-colors" />
           </a> 
           <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-            <FaInstagram className="w-6 h-6 hover:text-primary cursor-pointer" />
+            <FaInstagram className="w-6 h-6 hover:text-secondary cursor-pointer transition-colors" />
           </a> 
           <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-            <FaTwitter className="w-6 h-6 hover:text-primary cursor-pointer" />
+            <FaTwitter className="w-6 h-6 hover:text-primary cursor-pointer transition-colors" />
           </a>
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-            <FaFacebook className="w-6 h-6 hover:text-primary cursor-pointer" />
+            <FaFacebook className="w-6 h-6 hover:text-secondary cursor-pointer transition-colors" />
           </a>
         </div>
       </div> 
       <div>
-        <p>Copyright © {new Date().getFullYear()} - Global Supply Chain Management Association at Wayne State University</p>
+        <p className="text-sm">
+          Copyright © {new Date().getFullYear()} - 
+          <span className="text-primary font-semibold"> Wayne State </span>
+          <span className="text-secondary font-semibold">Global Supply Chain Management Association</span>
+        </p>
       </div>
     </footer>
   );

@@ -4,10 +4,10 @@ import { useAuth } from '../context/AuthContext';
 
 const AdminDashboard = () => {
   const { getToken } = useAuth();
-  const [members, setMembers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('members');
+  const [activeTab, setActiveTab] = useState('users');
 
   // Fetch dashboard data
   useEffect(() => {
@@ -17,15 +17,15 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const token = await getToken();
-      const [membersRes, eventsRes] = await Promise.all([
-        axios.get(`${process.env.REACT_APP_API_URL}/users/members`, {
+      const [usersRes, eventsRes] = await Promise.all([
+        axios.get(`${import.meta.env.VITE_API_URL}/users/all`, {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get(`${process.env.REACT_APP_API_URL}/events`, {
+        axios.get(`${import.meta.env.VITE_API_URL}/events`, {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
-      setMembers(membersRes.data);
+      setUsers(usersRes.data);
       setEvents(eventsRes.data);
       setLoading(false);
     } catch (error) {
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
       const token = await getToken();
       const newStatus = currentStatus === 'paid' ? 'not_paid' : 'paid';
       await axios.put(
-        `${process.env.REACT_APP_API_URL}/users/${userId}/payment`,
+        `${import.meta.env.VITE_API_URL}/users/${userId}/payment`,
         { paymentStatus: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -48,6 +48,43 @@ const AdminDashboard = () => {
     } catch (error) {
       console.error('Error updating payment status:', error);
       alert('Failed to update payment status.');
+    }
+  };
+
+  // Toggle user role
+  const toggleUserRole = async (userId, currentRole) => {
+    try {
+      const token = await getToken();
+      const newRole = currentRole === 'admin' ? 'member' : 'admin';
+      
+      if (window.confirm(`Are you sure you want to change this user's role to ${newRole}?`)) {
+        await axios.put(
+          `${import.meta.env.VITE_API_URL}/users/${userId}/role`,
+          { role: newRole },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        fetchDashboardData();
+      }
+    } catch (error) {
+      console.error('Error updating user role:', error);
+      alert('Failed to update user role.');
+    }
+  };
+
+  // Delete user
+  const deleteUser = async (userId, userEmail) => {
+    try {
+      if (window.confirm(`Are you sure you want to delete user ${userEmail}? This action cannot be undone.`)) {
+        const token = await getToken();
+        await axios.delete(
+          `${import.meta.env.VITE_API_URL}/users/${userId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        fetchDashboardData();
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Failed to delete user.');
     }
   };
 
@@ -59,24 +96,25 @@ const AdminDashboard = () => {
     );
   }
 
-  const paidMembers = members.filter(m => m.paymentStatus === 'paid').length;
-  const totalMembers = members.length;
+  const paidMembers = users.filter(u => u.paymentStatus === 'paid').length;
+  const totalMembers = users.length;
+  const adminCount = users.filter(u => u.role === 'admin').length;
 
   return (
     <div className="container mx-auto px-4 py-16">
-      <h1 className="text-5xl font-bold mb-8">Admin Dashboard</h1>
+      <h1 className="text-5xl font-bold mb-8 text-primary">Admin Dashboard</h1>
 
       {/* Stats Cards */}
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
-        <div className="stats shadow">
+      <div className="grid md:grid-cols-4 gap-6 mb-8">
+        <div className="stats shadow border-2 border-primary/20">
           <div className="stat">
-            <div className="stat-title">Total Members</div>
-            <div className="stat-value">{totalMembers}</div>
+            <div className="stat-title">Total Users</div>
+            <div className="stat-value text-primary">{totalMembers}</div>
             <div className="stat-desc">Registered users</div>
           </div>
         </div>
 
-        <div className="stats shadow">
+        <div className="stats shadow border-2 border-secondary/20">
           <div className="stat">
             <div className="stat-title">Paid Members</div>
             <div className="stat-value text-success">{paidMembers}</div>
@@ -84,10 +122,18 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className="stats shadow">
+        <div className="stats shadow border-2 border-accent/20">
+          <div className="stat">
+            <div className="stat-title">Admins</div>
+            <div className="stat-value text-secondary">{adminCount}</div>
+            <div className="stat-desc">Admin users</div>
+          </div>
+        </div>
+
+        <div className="stats shadow border-2 border-info/20">
           <div className="stat">
             <div className="stat-title">Total Events</div>
-            <div className="stat-value">{events.length}</div>
+            <div className="stat-value text-info">{events.length}</div>
             <div className="stat-desc">Scheduled events</div>
           </div>
         </div>
@@ -96,10 +142,10 @@ const AdminDashboard = () => {
       {/* Tabs */}
       <div className="tabs tabs-boxed mb-6">
         <a
-          className={`tab ${activeTab === 'members' ? 'tab-active' : ''}`}
-          onClick={() => setActiveTab('members')}
+          className={`tab ${activeTab === 'users' ? 'tab-active' : ''}`}
+          onClick={() => setActiveTab('users')}
         >
-          Members
+          User Management
         </a>
         <a
           className={`tab ${activeTab === 'events' ? 'tab-active' : ''}`}
@@ -109,11 +155,11 @@ const AdminDashboard = () => {
         </a>
       </div>
 
-      {/* Members Table */}
-      {activeTab === 'members' && (
-        <div className="card bg-base-100 shadow-xl">
+      {/* Users Table */}
+      {activeTab === 'users' && (
+        <div className="card bg-base-100 shadow-xl border-2 border-primary/20">
           <div className="card-body">
-            <h2 className="card-title mb-4">Member Management</h2>
+            <h2 className="card-title mb-4 text-primary">User Management</h2>
             <div className="overflow-x-auto">
               <table className="table table-zebra w-full">
                 <thead>
@@ -122,29 +168,49 @@ const AdminDashboard = () => {
                     <th>Email</th>
                     <th>Major</th>
                     <th>Year</th>
+                    <th>Role</th>
                     <th>Payment Status</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {members.map((member) => (
-                    <tr key={member._id}>
-                      <td>{member.firstName} {member.lastName}</td>
-                      <td>{member.email}</td>
-                      <td>{member.major}</td>
-                      <td>{member.graduationYear}</td>
+                  {users.map((user) => (
+                    <tr key={user._id}>
+                      <td className="font-semibold">{user.firstName} {user.lastName}</td>
+                      <td>{user.email}</td>
+                      <td>{user.major}</td>
+                      <td>{user.graduationYear}</td>
                       <td>
-                        <div className={`badge ${member.paymentStatus === 'paid' ? 'badge-success' : 'badge-warning'}`}>
-                          {member.paymentStatus === 'paid' ? 'Paid' : 'Not Paid'}
+                        <div className={`badge ${user.role === 'admin' ? 'badge-secondary' : 'badge-primary'}`}>
+                          {user.role}
                         </div>
                       </td>
                       <td>
-                        <button
-                          className="btn btn-sm btn-primary"
-                          onClick={() => togglePaymentStatus(member._id, member.paymentStatus)}
-                        >
-                          Toggle Payment
-                        </button>
+                        <div className={`badge ${user.paymentStatus === 'paid' ? 'badge-success' : 'badge-warning'}`}>
+                          {user.paymentStatus === 'paid' ? 'Paid' : 'Not Paid'}
+                        </div>
+                      </td>
+                      <td>
+                        <div className="flex gap-2">
+                          <button
+                            className="btn btn-xs btn-primary"
+                            onClick={() => togglePaymentStatus(user._id, user.paymentStatus)}
+                          >
+                            Toggle Payment
+                          </button>
+                          <button
+                            className="btn btn-xs btn-secondary"
+                            onClick={() => toggleUserRole(user._id, user.role)}
+                          >
+                            Toggle Role
+                          </button>
+                          <button
+                            className="btn btn-xs btn-error"
+                            onClick={() => deleteUser(user._id, user.email)}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -157,27 +223,36 @@ const AdminDashboard = () => {
 
       {/* Events Table */}
       {activeTab === 'events' && (
-        <div className="card bg-base-100 shadow-xl">
+        <div className="card bg-base-100 shadow-xl border-2 border-primary/20">
           <div className="card-body">
-            <h2 className="card-title mb-4">Event Management</h2>
+            <h2 className="card-title mb-4 text-primary">Event Management</h2>
             <div className="overflow-x-auto">
               <table className="table table-zebra w-full">
                 <thead>
                   <tr>
                     <th>Event Name</th>
                     <th>Date</th>
+                    <th>Time</th>
                     <th>Location</th>
                     <th>Attendees</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {events.map((event) => (
                     <tr key={event._id}>
-                      <td>{event.name}</td>
+                      <td className="font-semibold">{event.name}</td>
                       <td>{new Date(event.date).toLocaleDateString()}</td>
+                      <td>{event.time}</td>
                       <td>{event.location}</td>
                       <td>
                         <div className="badge badge-info">{event.attendees?.length || 0}</div>
+                      </td>
+                      <td>
+                        <div className="flex gap-2">
+                          <button className="btn btn-xs btn-primary">Edit</button>
+                          <button className="btn btn-xs btn-error">Delete</button>
+                        </div>
                       </td>
                     </tr>
                   ))}
