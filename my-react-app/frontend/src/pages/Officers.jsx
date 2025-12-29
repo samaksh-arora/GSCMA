@@ -5,57 +5,45 @@ const Officers = () => {
   const officers = [
     {
       id: 1,
-      name: 'Sarah Johnson',
+      name: 'Tharunika Vasudevan',
       position: 'President',
-      major: 'Supply Chain Management',
       year: 'Senior',
-      email: 'president@gscma.org',
-      image: 'https://i.pravatar.cc/300?img=1'
+      image: ''
     },
     {
       id: 2,
-      name: 'Michael Chen',
-      position: 'Vice President',
-      major: 'Operations Management',
+      name: 'Daniel Kuznair',
+      position: 'Co- Vice President',
       year: 'Junior',
-      email: 'vp@gscma.org',
-      image: 'https://i.pravatar.cc/300?img=2'
+      image: ''
     },
     {
       id: 3,
-      name: 'Emily Rodriguez',
-      position: 'Treasurer',
-      major: 'Business Administration',
+      name: 'Connor Diemend',
+      position: 'Co- Vice President',
       year: 'Senior',
-      email: 'treasurer@gscma.org',
-      image: 'https://i.pravatar.cc/300?img=3'
+      image: ''
     },
     {
       id: 4,
-      name: 'David Patel',
+      name: 'Aasiyah Imthias',
       position: 'Secretary',
-      major: 'Logistics Management',
       year: 'Sophomore',
-      email: 'secretary@gscma.org',
-      image: 'https://i.pravatar.cc/300?img=4'
+      image: ''
     },
     {
       id: 5,
       name: 'Jessica Williams',
       position: 'Events Coordinator',
-      major: 'Supply Chain Management',
       year: 'Junior',
-      email: 'events@gscma.org',
-      image: 'https://i.pravatar.cc/300?img=5'
+      image: ''
     },
     {
       id: 6,
       name: 'Alex Thompson',
       position: 'Marketing Director',
-      major: 'Marketing',
       year: 'Senior',
-      email: 'marketing@gscma.org',
-      image: 'https://i.pravatar.cc/300?img=6'
+      image: ''
     }
   ];
 
@@ -79,9 +67,7 @@ const Officers = () => {
             <div className="card-body items-center text-center">
               <h2 className="card-title">{officer.name}</h2>
               <div className="badge badge-primary">{officer.position}</div>
-              <p className="text-sm text-gray-600">{officer.major}</p>
               <p className="text-sm text-gray-600">{officer.year}</p>
-              <a href={`mailto:${officer.email}`} className="link link-primary">{officer.email}</a>
             </div>
           </div>
         ))}
