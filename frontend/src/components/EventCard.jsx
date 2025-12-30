@@ -31,6 +31,27 @@ const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
     }
   };
 
+  // Convert 24-hour time to 12-hour format
+  const formatTime = (time) => {
+    if (!time) return '';
+    
+    // If time already includes AM/PM, return as is
+    if (time.toLowerCase().includes('am') || time.toLowerCase().includes('pm')) {
+      return time;
+    }
+    
+    // Parse 24-hour format (e.g., "14:00" or "14:00:00")
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours, 10);
+    const min = minutes || '00';
+    
+    // Convert to 12-hour format
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12; // Convert 0 to 12 for midnight
+    
+    return `${hour12}:${min} ${period}`;
+  };
+
   // Check if description is long enough to need expansion
   const isLongDescription = event.description && event.description.length > 150;
 
@@ -64,7 +85,7 @@ const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
               <div className="w-8 h-8 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <FaClock className="text-secondary text-sm" />
               </div>
-              <span className="text-base-content/80 font-medium">{event.time}</span>
+              <span className="text-base-content/80 font-medium">{formatTime(event.time)}</span>
             </div>
           </div>
 
