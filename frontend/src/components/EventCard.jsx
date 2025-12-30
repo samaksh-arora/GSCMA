@@ -59,14 +59,14 @@ const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
     <div className="card bg-base-100 shadow-lg hover:shadow-2xl border border-base-300 hover:border-primary/50 transition-all duration-300 h-full">
       <div className="card-body p-6">
         {/* Event Title */}
-        <h2 className="card-title text-2xl font-bold text-primary mb-4">
+        <h2 className="card-title text-2xl font-bold text-primary mb-4 break-words">
           {event.name}
         </h2>
         
         {/* Event Details */}
         <div className="space-y-3 mb-4">
           {/* Date and Time */}
-          <div className="flex items-start gap-6">
+          <div className="flex items-start gap-6 flex-wrap">
             <div className="flex items-center gap-2 text-sm">
               <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <FaCalendarAlt className="text-primary text-sm" />
@@ -94,13 +94,13 @@ const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
             <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
               <FaMapMarkerAlt className="text-accent text-sm" />
             </div>
-            <span className="text-base-content/80 font-medium">{event.location}</span>
+            <span className="text-base-content/80 font-medium break-words">{event.location}</span>
           </div>
         </div>
 
         {/* Description with expand/collapse */}
         <div className="mb-4">
-          <p className={`text-base-content/70 leading-relaxed ${!isExpanded && isLongDescription ? 'line-clamp-3' : ''}`}>
+          <p className={`text-base-content/70 leading-relaxed break-words overflow-wrap-anywhere ${!isExpanded && isLongDescription ? 'line-clamp-3' : ''}`}>
             {event.description}
           </p>
           {isLongDescription && (
@@ -125,7 +125,7 @@ const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
         <div className="divider my-2"></div>
 
         {/* Footer: Attendees & Actions */}
-        <div className="flex items-center justify-between mt-2">
+        <div className="flex items-center justify-between mt-2 flex-wrap gap-2">
           {/* Attendee Count (Admin Only) */}
           {isAdmin ? (
             <div className="flex items-center gap-2 px-3 py-2 bg-info/10 rounded-lg">
@@ -139,7 +139,7 @@ const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
           )}
           
           {/* Action Buttons */}
-          <div className={`flex gap-2 ${!isAdmin ? 'ml-auto' : ''}`}>
+          <div className={`flex gap-2 flex-wrap ${!isAdmin ? 'ml-auto' : ''}`}>
             {isAdmin ? (
               <>
                 <button 

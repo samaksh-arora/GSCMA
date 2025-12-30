@@ -17,6 +17,7 @@ import Officers from './pages/Officers';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
 import ForgotPassword from './pages/ForgotPassword';
+import Payment from './pages/Payment'
 
 function App() {
   return (
@@ -32,6 +33,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/officers" element={<Officers />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/payment" element={<Payment/>} />
+          
           <Route path="/members" element={
             <ProtectedRoute>
               <Members />

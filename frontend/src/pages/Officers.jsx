@@ -239,7 +239,8 @@ const Officers = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Contact Us
+              <a href='/contact'>Contact Us</a>
+              
             </motion.button>
           </motion.div>
         </div>

@@ -30,6 +30,7 @@ const Navbar = () => {
             <li><Link to="/officers" className="hover:text-primary">Officers</Link></li>
             <li><Link to="/events" className="hover:text-primary">Events</Link></li>
             <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
+            <li><Link to="/payment" className="hover:text-primary">Payment</Link></li>
             {currentUser && <li><Link to="/members" className="hover:text-primary">Members</Link></li>}
             {userRole === 'admin' && <li><Link to="/admin" className="hover:text-primary">Admin</Link></li>}
           </ul>
@@ -49,6 +50,7 @@ const Navbar = () => {
           <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
           {currentUser && <li><Link to="/members" className="hover:text-primary transition-colors">Members</Link></li>}
           {userRole === 'admin' && <li><Link to="/admin" className="hover:text-primary transition-colors">Admin</Link></li>}
+          <li><Link to="/payment" className="hover:text-primary">Payment</Link></li>
         </ul>
       </div>
       
