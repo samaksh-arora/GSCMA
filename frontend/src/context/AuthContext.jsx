@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
   const fetchUserRole = async (user) => {
     try {
       console.log('AuthContext: Getting token for user role fetch');
-      const token = await user.getIdToken();
+      const token = await user.getIdToken(true);
       console.log('AuthContext: Making API call to fetch user role');
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/users/me`,
