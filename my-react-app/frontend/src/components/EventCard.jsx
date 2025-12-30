@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaEdit, FaTrash, FaUsers, FaCheck, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 // Event Card Component - displays event details with RSVP functionality
 const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
@@ -8,9 +9,12 @@ const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
   const [isRsvped, setIsRsvped] = useState(
     event.attendees?.some(attendee => attendee.userId === currentUser?.uid) || false
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Handle RSVP to event
   const handleRsvp = async () => {
+    setIsLoading(true);
     try {
       const token = await getToken();
       await axios.post(
@@ -19,59 +23,138 @@ const EventCard = ({ event, isAdmin, onDelete, onEdit }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setIsRsvped(true);
-      alert('Successfully RSVP\'d to event!');
     } catch (error) {
       console.error('Error RSVPing to event:', error);
       alert('Failed to RSVP. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  // Check if description is long enough to need expansion
+  const isLongDescription = event.description && event.description.length > 150;
+
   return (
-    <div className="card bg-base-100 shadow-xl border-2 border-primary/20 hover:border-primary transition-all">
-      <div className="card-body">
-        <h2 className="card-title text-primary">{event.name}</h2>
-        <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
-          <div className="flex items-center gap-1">
-            <svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span>{new Date(event.date).toLocaleDateString()}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>{event.time}</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-1 text-sm text-gray-600 mb-3">
-          <svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span>{event.location}</span>
-        </div>
-        <p className="text-base-content">{event.description}</p>
+    <div className="card bg-base-100 shadow-lg hover:shadow-2xl border border-base-300 hover:border-primary/50 transition-all duration-300 h-full">
+      <div className="card-body p-6">
+        {/* Event Title */}
+        <h2 className="card-title text-2xl font-bold text-primary mb-4">
+          {event.name}
+        </h2>
         
-        <div className="card-actions justify-between items-center mt-4">
-          <div className="badge badge-info">
-            {event.attendees?.length || 0} {(event.attendees?.length || 0) === 1 ? 'Attendee' : 'Attendees'}
+        {/* Event Details */}
+        <div className="space-y-3 mb-4">
+          {/* Date and Time */}
+          <div className="flex items-start gap-6">
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <FaCalendarAlt className="text-primary text-sm" />
+              </div>
+              <span className="text-base-content/80 font-medium">
+                {new Date(event.date).toLocaleDateString('en-US', { 
+                  weekday: 'short', 
+                  month: 'short', 
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-8 h-8 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <FaClock className="text-secondary text-sm" />
+              </div>
+              <span className="text-base-content/80 font-medium">{event.time}</span>
+            </div>
           </div>
+
+          {/* Location */}
+          <div className="flex items-center gap-2 text-sm">
+            <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <FaMapMarkerAlt className="text-accent text-sm" />
+            </div>
+            <span className="text-base-content/80 font-medium">{event.location}</span>
+          </div>
+        </div>
+
+        {/* Description with expand/collapse */}
+        <div className="mb-4">
+          <p className={`text-base-content/70 leading-relaxed ${!isExpanded && isLongDescription ? 'line-clamp-3' : ''}`}>
+            {event.description}
+          </p>
+          {isLongDescription && (
+            <button 
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-primary hover:text-primary/80 text-sm font-medium mt-2 flex items-center gap-1 transition-colors"
+            >
+              {isExpanded ? (
+                <>
+                  Show less <FaChevronUp className="text-xs" />
+                </>
+              ) : (
+                <>
+                  Read more <FaChevronDown className="text-xs" />
+                </>
+              )}
+            </button>
+          )}
+        </div>
+        
+        {/* Divider */}
+        <div className="divider my-2"></div>
+
+        {/* Footer: Attendees & Actions */}
+        <div className="flex items-center justify-between mt-2">
+          {/* Attendee Count (Admin Only) */}
+          {isAdmin ? (
+            <div className="flex items-center gap-2 px-3 py-2 bg-info/10 rounded-lg">
+              <FaUsers className="text-info text-sm" />
+              <span className="text-sm font-semibold text-info">
+                {event.attendees?.length || 0} {(event.attendees?.length || 0) === 1 ? 'Attendee' : 'Attendees'}
+              </span>
+            </div>
+          ) : (
+            <div></div>
+          )}
           
-          <div className="flex gap-2">
+          {/* Action Buttons */}
+          <div className={`flex gap-2 ${!isAdmin ? 'ml-auto' : ''}`}>
             {isAdmin ? (
               <>
-                <button className="btn btn-sm btn-secondary" onClick={() => onEdit(event)}>Edit</button>
-                <button className="btn btn-sm btn-error" onClick={() => onDelete(event._id)}>Delete</button>
+                <button 
+                  className="btn btn-sm btn-ghost text-secondary hover:bg-secondary/10 gap-2"
+                  onClick={() => onEdit(event)}
+                >
+                  <FaEdit />
+                  Edit
+                </button>
+                <button 
+                  className="btn btn-sm btn-ghost text-error hover:bg-error/10 gap-2"
+                  onClick={() => onDelete(event._id)}
+                >
+                  <FaTrash />
+                  Delete
+                </button>
               </>
             ) : (
               currentUser && (
                 <button 
-                  className={`btn btn-sm ${isRsvped ? 'btn-success' : 'btn-primary'} hover:btn-secondary transition-all`}
+                  className={`btn btn-sm gap-2 ${
+                    isRsvped 
+                      ? 'btn-success text-white' 
+                      : 'btn-primary'
+                  } ${isLoading ? 'loading' : ''}`}
                   onClick={handleRsvp}
-                  disabled={isRsvped}
+                  disabled={isRsvped || isLoading}
                 >
-                  {isRsvped ? 'RSVP\'d ✓' : 'RSVP'}
+                  {isRsvped ? (
+                    <>
+                      <FaCheck />
+                      RSVP'd
+                    </>
+                  ) : (
+                    'RSVP Now'
+                  )}
                 </button>
               )
             )}

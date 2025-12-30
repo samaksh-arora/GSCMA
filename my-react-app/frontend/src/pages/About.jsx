@@ -86,8 +86,8 @@ const About = () => {
             <motion.div variants={fadeIn}>
               <h2 className="text-4xl font-bold mb-6 text-base-content">Who We Are</h2>
               <p className="text-lg text-base-content/80 mb-4 leading-relaxed">
-                The Global Supply Chain Management Association at Wayne State University is a student-run
-                organization dedicated to promoting excellence in supply chain education, research, and practice.
+               GSCMA is a student-led organization for global supply chain management undergraduates, 
+               MBA students and other interested Wayne State students
               </p>
               <p className="text-lg text-base-content/80 leading-relaxed">
                 Founded by students passionate about logistics, operations, and global trade, we provide

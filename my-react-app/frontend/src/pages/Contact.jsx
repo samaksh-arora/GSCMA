@@ -73,7 +73,7 @@ const Contact = () => {
 
           {/* Instagram Card */}
           <motion.a
-            href="https://instagram.com/gscma"
+            href="https://instagram.com/wsu_gscma"
             target="_blank"
             rel="noopener noreferrer"
             className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border-2 border-base-300 hover:border-accent"
@@ -90,7 +90,7 @@ const Contact = () => {
               <p className="text-base-content/70 mb-4">
                 Follow us for event photos and community highlights
               </p>
-              <p className="text-accent font-semibold">@GSCMA_WSU</p>
+              <p className="text-accent font-semibold">@WSU_GSCMA</p>
             </div>
           </motion.a>
         </div>
