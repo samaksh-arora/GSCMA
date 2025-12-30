@@ -30,16 +30,25 @@ const Contact = () => {
           {/* Email Card */}
           <motion.a
             href="mailto:info@gscma.org"
-            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border-2 border-base-300 hover:border-primary"
+            className="card bg-base-100 shadow-xl border-2 border-base-300 hover:border-primary cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            whileHover={{ y: -10, scale: 1.02 }}
+            whileHover={{ 
+              y: -8,
+              scale: 1.02,
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+              transition: { duration: 0.2, ease: "easeOut" }
+            }}
+            whileTap={{ scale: 0.98 }}
           >
             <div className="card-body items-center text-center">
-              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <motion.div 
+                className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4"
+                whileHover={{ rotate: 360, transition: { duration: 0.5 } }}
+              >
                 <FaEnvelope className="w-10 h-10 text-primary" />
-              </div>
+              </motion.div>
               <h3 className="card-title text-2xl mb-2">Email Us</h3>
               <p className="text-base-content/70 mb-4">
                 Send us an email and we'll get back to you soon
@@ -50,19 +59,28 @@ const Contact = () => {
 
           {/* LinkedIn Card */}
           <motion.a
-            href="https://linkedin.com/company/gscma"
+            href="https://www.linkedin.com/groups/6572845/"
             target="_blank"
             rel="noopener noreferrer"
-            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border-2 border-base-300 hover:border-secondary"
+            className="card bg-base-100 shadow-xl border-2 border-base-300 hover:border-secondary cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            whileHover={{ y: -10, scale: 1.02 }}
+            whileHover={{ 
+              y: -8,
+              scale: 1.02,
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+              transition: { duration: 0.2, ease: "easeOut" }
+            }}
+            whileTap={{ scale: 0.98 }}
           >
             <div className="card-body items-center text-center">
-              <div className="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
+              <motion.div 
+                className="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mb-4"
+                whileHover={{ rotate: 360, transition: { duration: 0.5 } }}
+              >
                 <FaLinkedin className="w-10 h-10 text-secondary" />
-              </div>
+              </motion.div>
               <h3 className="card-title text-2xl mb-2">LinkedIn</h3>
               <p className="text-base-content/70 mb-4">
                 Connect with us professionally and see career opportunities
@@ -76,16 +94,25 @@ const Contact = () => {
             href="https://instagram.com/wsu_gscma"
             target="_blank"
             rel="noopener noreferrer"
-            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border-2 border-base-300 hover:border-accent"
+            className="card bg-base-100 shadow-xl border-2 border-base-300 hover:border-accent cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            whileHover={{ y: -10, scale: 1.02 }}
+            whileHover={{ 
+              y: -8,
+              scale: 1.02,
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+              transition: { duration: 0.2, ease: "easeOut" }
+            }}
+            whileTap={{ scale: 0.98 }}
           >
             <div className="card-body items-center text-center">
-              <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mb-4">
+              <motion.div 
+                className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mb-4"
+                whileHover={{ rotate: 360, transition: { duration: 0.5 } }}
+              >
                 <FaInstagram className="w-10 h-10 text-accent" />
-              </div>
+              </motion.div>
               <h3 className="card-title text-2xl mb-2">Instagram</h3>
               <p className="text-base-content/70 mb-4">
                 Follow us for event photos and community highlights
