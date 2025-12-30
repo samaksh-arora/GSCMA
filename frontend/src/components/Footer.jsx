@@ -11,10 +11,10 @@ const Footer = () => {
       </div> 
       <div>
         <div className="grid grid-flow-col gap-4">
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/groups/6572845/" target="_blank" rel="noopener noreferrer">
             <FaLinkedin className="w-6 h-6 hover:text-primary cursor-pointer transition-colors" />
           </a> 
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://instagram.com/wsu_gscma" target="_blank" rel="noopener noreferrer">
             <FaInstagram className="w-6 h-6 hover:text-secondary cursor-pointer transition-colors" />
           </a> 
         
