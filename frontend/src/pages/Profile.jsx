@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
-import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaUser, FaEnvelope, FaGraduationCap, FaPhone, FaCalendarCheck } from 'react-icons/fa';
+import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaUser, FaEnvelope, FaGraduationCap, FaPhone, FaCalendarCheck, FaEdit, FaTimes } from 'react-icons/fa';
 
 const Profile = () => {
   const { currentUser, getToken } = useAuth();
@@ -11,6 +11,16 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Edit profile state
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    major: '',
+    graduationYear: ''
+  });
 
   // Fetch user profile data
   useEffect(() => {
@@ -91,6 +101,62 @@ const Profile = () => {
     } finally {
       setLoadingEvents(false);
     }
+  };
+
+  // Edit Profile Functions
+  const handleEditClick = () => {
+    setEditFormData({
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      phoneNumber: userData.phoneNumber,
+      major: userData.major,
+      graduationYear: userData.graduationYear
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditFormChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSaveProfile = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const token = await getToken();
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/users/me`,
+        editFormData,
+        { 
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          } 
+        }
+      );
+      
+      alert('Profile updated successfully!');
+      setShowEditModal(false);
+      fetchUserData(); // Refresh user data
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile. Please try again.');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setShowEditModal(false);
+    setEditFormData({
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      major: '',
+      graduationYear: ''
+    });
   };
 
   if (loading) {
@@ -247,8 +313,11 @@ const Profile = () => {
                   </div>
 
                   <div className="card-actions justify-end mt-6">
-                    <button className="btn btn-primary gap-2">
-                      <FaUser />
+                    <button 
+                      className="btn btn-primary gap-2"
+                      onClick={handleEditClick}
+                    >
+                      <FaEdit />
                       Edit Profile
                     </button>
                   </div>
@@ -312,6 +381,126 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {/* Edit Profile Modal */}
+      {showEditModal && (
+        <div className="modal modal-open">
+          <div className="modal-box max-w-2xl">
+            <h3 className="font-bold text-2xl text-primary mb-6 flex items-center gap-2">
+              <FaEdit />
+              Edit Profile
+            </h3>
+            
+            <form onSubmit={handleSaveProfile}>
+              <div className="space-y-4">
+                {/* First Name & Last Name */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text font-semibold">First Name</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={editFormData.firstName}
+                      onChange={handleEditFormChange}
+                      className="input input-bordered input-primary"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text font-semibold">Last Name</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={editFormData.lastName}
+                      onChange={handleEditFormChange}
+                      className="input input-bordered input-primary"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Phone Number */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-semibold">Phone Number</span>
+                  </label>
+                  <input
+                    type="tel"
+                    name="phoneNumber"
+                    value={editFormData.phoneNumber}
+                    onChange={handleEditFormChange}
+                    className="input input-bordered input-primary"
+                    required
+                  />
+                </div>
+
+                {/* Major */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-semibold">Major</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="major"
+                    value={editFormData.major}
+                    onChange={handleEditFormChange}
+                    className="input input-bordered input-primary"
+                    required
+                  />
+                </div>
+
+                {/* Graduation Year */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-semibold">Graduation Year</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="graduationYear"
+                    value={editFormData.graduationYear}
+                    onChange={handleEditFormChange}
+                    className="input input-bordered input-primary"
+                    min="2020"
+                    max="2035"
+                    required
+                  />
+                </div>
+
+                {/* Email (Read-only) */}
+                <div className="alert alert-info">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span className="text-sm">Email address cannot be changed. Contact admin if you need to update your email.</span>
+                </div>
+              </div>
+
+              <div className="modal-action">
+                <button
+                  type="button"
+                  className="btn btn-ghost gap-2"
+                  onClick={handleCancelEdit}
+                >
+                  <FaTimes />
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary gap-2"
+                >
+                  <FaEdit />
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
