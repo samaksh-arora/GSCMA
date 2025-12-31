@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Payment = () => {
   const membershipFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdI2_fI3hZK7VIZpv53_YTrdcPsHa28Au3CMggMgwLN26rXVg/viewform';
-  const venmoUsername = '@WSU_GSCMA';
+  const venmoUsername = '@WSU-GSCMA';
   const venmoUrl = 'https://www.venmo.com/u/WSU-GSCMA';
 
   const steps = [
