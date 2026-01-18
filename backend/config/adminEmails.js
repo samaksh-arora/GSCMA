@@ -3,6 +3,7 @@
 const ADMIN_EMAILS = [
   'samaksh.arora@wayne.edu',  // Add your email here
   'admin@wayne.edu',           // Example admin email
+  
   // Add more admin emails as needed
 ];
 
