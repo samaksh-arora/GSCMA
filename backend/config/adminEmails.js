@@ -1,10 +1,9 @@
 // Configuration for admin emails
 // Add emails here that should automatically get admin role
 const ADMIN_EMAILS = [
-  'samaksh.arora@wayne.edu',  // Add your email here
-  'admin@wayne.edu',           // Example admin email
-  
-  // Add more admin emails as needed
+  'samaksh.arora@wayne.edu',
+  'gaurav.vasudevan@wayne.edu',  // Add your email here
+     // Add more admin emails as needed
 ];
 
 // Function to check if an email should have admin role
