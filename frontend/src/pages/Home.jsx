@@ -69,7 +69,7 @@ const Home = () => {
         <motion.div
           className="absolute inset-0 w-full h-full"
           style={{
-            backgroundImage: 'url(/IMG_4710.JPG)', // CHANGE BACKGROUND PICTURE
+            backgroundImage: "url('/New_GSCMA_Background.jpg')", // CHANGE BACKGROUND PICTURE
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             y: backgroundY,
