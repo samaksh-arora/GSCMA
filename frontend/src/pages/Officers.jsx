@@ -4,13 +4,17 @@ import { FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import tharunikaImg from '../assets/tharunika.jpeg';
 import danielImg from '../assets/daniel.jpeg';
 import connorImg from '../assets/connor.jpeg';
-import aayanImg from '../assets/aayan.jpeg';
+import Aayan_QaziImg from '../assets/Aayan_Qazi.jpeg';
 import johnImg from '../assets/john.jpeg';
 import makaylaImg from '../assets/makayla.jpeg';
 import aliImg from '../assets/ali.jpeg';
 import zeinabImg from '../assets/zeinab.jpeg';
 import aasiyahImg from '../assets/aasiyah.jpeg';
 import danielSImg from '../assets/danielS.jpeg';
+import Joseph_BurtonImg from '../assets/Joseph_Burton.jpeg';
+import ShaTina_BoxIMG from '../assets/ShaTina_Box.jpeg';
+import Ashir_QaziImg from '../assets/Ashir_Qazi.jpeg';
+import Tahani_ChoudhuryImg from '../assets/Tahani_Choudhury.jpeg';
 
 const Officers = () => {
   // Officer data with images
@@ -62,19 +66,19 @@ const Officers = () => {
     },
     {
       id: 6,
-      name: 'Abu Hadee',
+      name: 'Ashir Qazi',
       position: 'Membership Officer',
-      year: 'Senior',
-      image: 'https://ui-avatars.com/api/?name=Abu+Hadee&size=200&background=4ade80&color=ffffff',
+      year: 'Sophomore',
+      image: Ashir_QaziImg,
       objectPosition: 'center center',
       bio: 'Engaging members and fostering collaboration.',
     },
     {
       id: 7,
-      name: 'Isha Ansari',
+      name: 'Tahani Choudhury',
       position: 'Co-Marketing Officer',
       year: 'Senior',
-      image: 'https://ui-avatars.com/api/?name=Isha+Ansari&size=200&background=4ade80&color=ffffff',
+      image: Tahani_ChoudhuryImg,
       objectPosition: 'center center',
       bio: 'Amplifying GSCMA\'s voice and brand.',
     },
@@ -98,10 +102,10 @@ const Officers = () => {
     },
     {
       id: 10,
-      name: 'Aayan Qazi',
+      name: 'ShaTina Box',
       position: 'AIAG Chair',
-      year: 'Senior',
-      image: aayanImg,
+      year: 'Masters',
+      image: ShaTina_BoxIMG,
       objectPosition: 'center top',
       bio: 'Leading AIAG initiatives and automotive supply chain connections.',
     },
@@ -125,13 +129,23 @@ const Officers = () => {
     },
     {
       id: 13,
-      name: 'Alejandro Lazaro',
+      name: 'Aayan Qazi',
       position: 'CSCMP Chair',
-      year: 'Senior',
-      image: 'https://ui-avatars.com/api/?name=Alejandro+Lazaro&size=200&background=4ade80&color=ffffff',
+      year: 'Sophomore',
+      image: Aayan_QaziImg,
       objectPosition: 'center center',
       bio: 'Bridging GSCMA with CSCMP national network.',
-    }
+    },
+    {
+      id: 14,
+      name: 'Joseph Burton',
+      position: 'Merchandise Coordinator',
+      year: 'Senior',
+      image: Joseph_BurtonImg,
+      objectPosition: 'center center',
+      bio: 'Curating GSCMA merchandise and connecting our community.',
+    },
+    
   ];
 
   const fadeIn = {
