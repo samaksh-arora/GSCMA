@@ -75,7 +75,7 @@ const About = () => {
             <motion.div variants={fadeIn}>
               <div className="relative">
                 <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800"
+                  src="https://i.postimg.cc/zDggbpT5/All-About-US.jpg"
                   alt="GSCMA Team"
                   className="rounded-3xl shadow-2xl"
                 />
