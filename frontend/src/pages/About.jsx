@@ -34,7 +34,7 @@ const About = () => {
       <motion.div
         className="relative min-h-[60vh] flex items-center justify-center overflow-hidden"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920)',
+          backgroundImage: 'url(https://i.postimg.cc/9fNC8gQR/Header-About-Us.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -101,12 +101,12 @@ const About = () => {
               <h2 className="text-4xl font-bold mb-6 text-base-content">What We Do</h2>
               <div className="space-y-4">
                 {[
-                  { icon: '🎤', text: 'Host industry speakers and panel discussions' },
-                  { icon: '🏭', text: 'Organize company tours and site visits' },
-                  { icon: '🤝', text: 'Facilitate networking events with professionals' },
-                  { icon: '📈', text: 'Provide career development workshops' },
-                  { icon: '💼', text: 'Connect students with internship opportunities' },
-                  { icon: '🏆', text: 'Compete in supply chain case competitions' },
+                  { icon: '-', text: 'Host industry speakers and panel discussions' },
+                  { icon: '-', text: 'Organize company tours and site visits' },
+                  { icon: '-', text: 'Facilitate networking events with professionals' },
+                  { icon: '-', text: 'Provide career development workshops' },
+                  { icon: '-', text: 'Connect students with internship opportunities' },
+                  { icon: '-', text: 'Compete in supply chain case competitions' },
                 ].map((item, index) => (
                   <motion.div
                     key={index}
@@ -121,11 +121,11 @@ const About = () => {
             </motion.div>
 
             <motion.div variants={fadeIn} className="order-1 md:order-2">
-              <div className="relative">
+              <div className="relative max-w-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800"
+                  src="https://i.postimg.cc/rRRCF06d/GSCMA-About-Us-Page.jpg"
                   alt="Events"
-                  className="rounded-3xl shadow-2xl"
+                  className="rounded-3xl shadow-2xl w-full"
                 />
                 <div className="absolute -top-6 -left-6 w-32 h-32 bg-secondary/20 rounded-3xl -z-10" />
               </div>
