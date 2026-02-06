@@ -29,7 +29,7 @@ const Contact = () => {
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {/* Email Card */}
           <motion.a
-            href="mailto:info@gscma.org"
+            href="mailto:gscma.wsu@gmail.com"
             className="card bg-base-100 shadow-xl border-2 border-base-300 hover:border-primary cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ const Contact = () => {
               <p className="text-base-content/70 mb-4">
                 Send us an email and we'll get back to you soon
               </p>
-              <p className="text-primary font-semibold">info@gscma.org</p>
+              <p className="text-primary font-semibold"> gscma.wsu@gmail.com</p>
             </div>
           </motion.a>
 
