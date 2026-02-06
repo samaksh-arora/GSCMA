@@ -123,7 +123,7 @@ const About = () => {
             <motion.div variants={fadeIn} className="order-1 md:order-2">
               <div className="relative max-w-2xl">
                 <img
-                  src="https://i.postimg.cc/rRRCF06d/GSCMA-About-Us-Page.jpg"
+                  src="https://i.postimg.cc/5NCvjMR7/ABOUT-US.jpg"
                   alt="Events"
                   className="rounded-3xl shadow-2xl w-full"
                 />
