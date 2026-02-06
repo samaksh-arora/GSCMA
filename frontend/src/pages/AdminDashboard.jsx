@@ -419,7 +419,7 @@ const AdminDashboard = () => {
                         </td>
                         <td>
                           <div className={`badge badge-lg ${user.paymentStatus === 'paid' ? 'badge-success' : 'badge-warning'}`}>
-                            {user.paymentStatus === 'paid' ? '✓ Paid' : '⏳ Pending'}
+                            {user.paymentStatus === 'paid' ? '✓ Paid' : 'Pending'}
                           </div>
                         </td>
                         <td>

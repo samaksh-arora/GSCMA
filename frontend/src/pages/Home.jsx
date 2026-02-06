@@ -163,40 +163,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {/* Member of the Week Section */}
-      {/*<section className="bg-base-100 py-20">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="max-w-md mx-auto"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="relative rounded-xl overflow-hidden shadow-2xl">
-              <img 
-                src="/tharunika.jpeg" 
-                alt="Member of the Week" 
-                className="w-full h-auto block"
-              />
-              <div className="absolute top-0 left-0 right-0 p-8">
-                <motion.h2 
-                  className="text-white text-3xl md:text-5xl font-bold text-center tracking-tight"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  style={{
-                    textShadow: '0 4px 20px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6)',
-                  }}
-                >
-                  MEMBER OF THE WEEK
-                </motion.h2>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>*/}
-
+      
       {/* Mission + Features Section */}
       <div className="bg-base-100 py-20" ref={missionRef}>
         <div className="container mx-auto px-4">
