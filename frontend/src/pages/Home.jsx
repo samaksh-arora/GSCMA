@@ -204,67 +204,83 @@ const Home = () => {
           </div>
 
           {/* Upcoming Events with scroll animation */}
-          <div className="max-w-6xl mx-auto" ref={eventsRef}>
-            <motion.div
-              className="flex items-center justify-between mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              animate={eventsInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6 }}
-            >
-              <h3 className="text-4xl font-bold text-base-content">Upcoming Events</h3>
-              <Link to="/events" className="text-primary hover:underline font-semibold">
-                View all →
-              </Link>
-            </motion.div>
+<div className="max-w-6xl mx-auto px-4" ref={eventsRef}>
+  <motion.div
+    className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-3"
+    initial={{ opacity: 0, y: 30 }}
+    animate={eventsInView ? { opacity: 1, y: 0 } : {}}
+    transition={{ duration: 0.6 }}
+  >
+    <h3 className="text-3xl sm:text-4xl font-bold text-base-content">Upcoming Events</h3>
+    <Link to="/events" className="text-primary hover:underline font-semibold text-base sm:text-lg">
+      View all →
+    </Link>
+  </motion.div>
 
-            {loadingEvents ? (
-              <div className="flex justify-center items-center py-12">
-                <span className="loading loading-spinner loading-lg" />
-              </div>
-            ) : events.length === 0 ? (
-              <motion.div
-                className="text-center py-12"
-                initial={{ opacity: 0 }}
-                animate={eventsInView ? { opacity: 1 } : {}}
-              >
-                <p className="text-xl text-base-content/60">No upcoming events scheduled yet.</p>
-              </motion.div>
-            ) : (
-              <div className="grid md:grid-cols-3 gap-6">
-                {events.map((event, index) => (
-                  <motion.div
-                    key={event._id || event.id}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={eventsInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.5, delay: index * 0.15 }}
-                    whileHover={{ y: -10, scale: 1.02 }}
+  {loadingEvents ? (
+    <div className="flex justify-center items-center py-12">
+      <span className="loading loading-spinner loading-lg" />
+    </div>
+  ) : events.length === 0 ? (
+    <motion.div
+      className="text-center py-12"
+      initial={{ opacity: 0 }}
+      animate={eventsInView ? { opacity: 1 } : {}}
+    >
+      <p className="text-lg sm:text-xl text-base-content/60 px-4">
+        No upcoming events scheduled yet.
+      </p>
+    </motion.div>
+  ) : (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      {events.map((event, index) => (
+        <motion.div
+          key={event._id || event.id}
+          initial={{ opacity: 0, y: 50 }}
+          animate={eventsInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: index * 0.15 }}
+          whileHover={{ y: -10, scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <Link to="/events" className="block h-full">
+            <div className="card bg-base-100 border-2 border-base-300 hover:border-primary active:border-primary transition-all h-full shadow-lg hover:shadow-xl">
+              <div className="card-body p-5 sm:p-6">
+                <h4 className="card-title text-lg sm:text-xl mb-3 leading-tight">
+                  {event.name}
+                </h4>
+                <div className="space-y-2 mb-4">
+                  <p className="text-sm text-base-content/60 flex items-start gap-2">
+                    <span className="shrink-0">📅</span>
+                    <span>
+                      {event.date ? new Date(event.date).toLocaleDateString() : ''} • {event.time}
+                    </span>
+                  </p>
+                  <p className="text-sm text-base-content/60 flex items-start gap-2">
+                    <span className="shrink-0">📍</span>
+                    <span>{event.location}</span>
+                  </p>
+                </div>
+                <p className="text-sm text-base-content/80 line-clamp-3 mb-4 leading-relaxed">
+                  {event.description}
+                </p>
+                <div className="card-actions mt-auto">
+                  <motion.button
+                    className="btn btn-primary btn-sm w-full sm:w-auto"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    <Link to="/events">
-                      <div className="card bg-base-100 border-2 border-base-300 hover:border-primary transition-all h-full shadow-lg hover:shadow-xl">
-                        <div className="card-body">
-                          <h4 className="card-title text-xl mb-2">{event.name}</h4>
-                          <p className="text-sm text-base-content/60 mb-1">
-                            📅 {event.date ? new Date(event.date).toLocaleDateString() : ''} • {event.time}
-                          </p>
-                          <p className="text-sm text-base-content/60 mb-4">📍 {event.location}</p>
-                          <p className="text-sm text-base-content/80 line-clamp-3 mb-4">{event.description}</p>
-                          <div className="card-actions">
-                            <motion.button
-                              className="btn btn-primary btn-sm"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                            >
-                              Learn more
-                            </motion.button>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
+                    Learn more
+                  </motion.button>
+                </div>
               </div>
-            )}
-          </div>
+            </div>
+          </Link>
+        </motion.div>
+      ))}
+    </div>
+  )}
+</div>
+
         </div>
       </div>
     </div>

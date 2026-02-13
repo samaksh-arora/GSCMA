@@ -16,15 +16,15 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-lg border-b-2 border-primary sticky top-0 z-50">
+    <div className="navbar bg-base-100 shadow-lg border-b-2 border-primary sticky top-0 z-50 px-2 sm:px-4">
       <div className="navbar-start">
         <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
+          <label tabIndex={0} className="btn btn-ghost btn-sm lg:hidden p-2" aria-label="Open menu">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
             </svg>
           </label>
-          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-base-100 rounded-box w-52">
+          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-base-100 rounded-box w-52 border border-base-300">
             <li><Link to="/" className="hover:text-primary">Home</Link></li>
             <li><Link to="/about" className="hover:text-primary">About</Link></li>
             <li><Link to="/officers" className="hover:text-primary">Officers</Link></li>
@@ -35,9 +35,10 @@ const Navbar = () => {
             {userRole === 'admin' && <li><Link to="/admin" className="hover:text-primary">Admin</Link></li>}
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost normal-case text-xl font-bold">
+        <Link to="/" className="btn btn-ghost normal-case text-sm sm:text-base md:text-xl font-bold px-1 sm:px-2 min-h-0 h-auto py-2">
           <span className="text-primary">WAYNE STATE</span>
-          <span className="text-secondary ml-2">GSCMA</span>
+          <span className="text-secondary ml-1 sm:ml-2 hidden xs:inline">GSCMA</span>
+          <span className="text-secondary ml-1 sm:ml-2 inline xs:hidden">GSCMA</span>
         </Link>
       </div>
       
@@ -50,15 +51,15 @@ const Navbar = () => {
           <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
           {currentUser && <li><Link to="/members" className="hover:text-primary transition-colors">Members</Link></li>}
           {userRole === 'admin' && <li><Link to="/admin" className="hover:text-primary transition-colors">Admin</Link></li>}
-          <li><Link to="/payment" className="hover:text-primary">Payment</Link></li>
+          <li><Link to="/payment" className="hover:text-primary transition-colors">Payment</Link></li>
         </ul>
       </div>
       
-      <div className="navbar-end">
+      <div className="navbar-end gap-1 sm:gap-2">
         {currentUser ? (
           <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle avatar border-2 border-primary hover:border-secondary">
-              <div className="w-10 rounded-full">
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar border-2 border-primary hover:border-secondary btn-sm sm:btn-md" aria-label="User menu">
+              <div className="w-8 sm:w-10 rounded-full">
                 <img src={`https://ui-avatars.com/api/?name=${currentUser.email}&background=4ade80&color=ffffff`} alt="Profile" />
               </div>
             </label>
@@ -69,8 +70,12 @@ const Navbar = () => {
           </div>
         ) : (
           <>
-            <Link to="/join" className="btn btn-primary btn-sm mr-2 hover:btn-secondary">Join</Link>
-            <Link to="/login" className="btn btn-ghost btn-sm hover:text-primary">Login</Link>
+            <Link to="/join" className="btn btn-primary btn-xs sm:btn-sm hover:btn-secondary px-2 sm:px-4 min-h-0 h-8 sm:h-10">
+              Join
+            </Link>
+            <Link to="/login" className="btn btn-ghost btn-xs sm:btn-sm hover:text-primary px-2 sm:px-4 min-h-0 h-8 sm:h-10">
+              Login
+            </Link>
           </>
         )}
       </div>
